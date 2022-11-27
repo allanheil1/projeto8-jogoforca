@@ -17,7 +17,7 @@ export default function Layout() {
     //variável que armazena quantos erros o jogador já cometeu
     let[errorCount, setErrorCount] = React.useState(0);
     //variável que armazena a imagem da forca de acordo com os erros
-    const[imagemForca, setImagemForca] = React.useState(<img src={`./assets/forca${errorCount}.png`} />)
+    const[imagemForca, setImagemForca] = React.useState(<img src={`./assets/forca${errorCount}.png`} data-test="game-image"/>)
     //variável que armazena quantos acertos o jogador já fez
     let[acertosCount, setAcertosCount] = React.useState(0);
     //variável que armazena o chute de palavra do jogador
@@ -63,7 +63,7 @@ export default function Layout() {
             setErrorCount(errorCount += 1);
             console.log('erros: '+errorCount);
             //atualiza a imagem da forca correspondente ao número de erros
-            setImagemForca(<img src={`./assets/forca${errorCount}.png`} />);
+            setImagemForca(<img src={`./assets/forca${errorCount}.png`} data-test="game-image"/>);
             if(errorCount === 5){
                 //caso estoure o limite de erros, usuário perde o jogo
                 gameOver();
@@ -84,7 +84,7 @@ export default function Layout() {
 
     function gameOver(){
         setGameDone(true);
-        setImagemForca(<img src={`./assets/forca6.png`} />);
+        setImagemForca(<img src={`./assets/forca6.png`} data-test="game-image"/>);
         setFinalWordColor('red');
         gameWord = drawnWord;
         console.log(`perdeu o jogo!`);
@@ -107,13 +107,13 @@ export default function Layout() {
                 <div className = 'forca'>
                     {imagemForca}
                     <div className = "smallContainer">
-                        <button onClick={startGame} disabled={gameStarted}>
+                        <button onClick={startGame} disabled={gameStarted} data-test="choose-word">
                             Escolher Palavra
                         </button>
-                        <div className={gameDone === false ?'gameWord' : 'hidden'}>
+                        <div className={gameDone === false ?'gameWord' : 'hidden'} data-test="word">
                             {gameWord}
                         </div>
-                        <div className={gameDone === true ?`gameWord ${finalWordColor}` : 'hidden'}>
+                        <div className={gameDone === true ?`gameWord ${finalWordColor}` : 'hidden'} data-answer="answer">
                             {drawnWord}
                         </div>             
                     </div>
@@ -125,6 +125,7 @@ export default function Layout() {
                             disabled={!gameStarted}
                             onClick={() => chosenLetter(letra)}
                             className={gameStarted === true ? 'letrasEnabled' : 'letrasDisabled'}
+                            data-test="letter"
                         >
                         {letra}    
                         </button>
@@ -135,13 +136,14 @@ export default function Layout() {
                         <p>Já sei a palavra!</p>
                     </div>
                     <div>
-                        <input type = 'text' onChange={event => setGuess(event.target.value.toLowerCase())}/>
+                        <input type = 'text' onChange={event => setGuess(event.target.value.toLowerCase())} data-test="guess-input"/>
                     </div>
                     <div>
                         <button 
                             onClick={guessed} 
                             disabled={!gameStarted}
                             className="guessButton"
+                            data-test="guess-button"
                         >
                             Chutar!
                         </button>

@@ -1,5 +1,5 @@
-import palavras from './palavras'
-import React, {useEffect} from 'react';
+import palavras from './palavras';
+import React from 'react';
 
 export default function Layout() {
 
@@ -73,6 +73,7 @@ export default function Layout() {
     }
 
     function guessed(){
+        setGameStarted(false);
         console.log(`chutou!`);
         const palavraCheck = drawnWord.join('');
         if(guess == palavraCheck){
@@ -97,8 +98,6 @@ export default function Layout() {
         console.log('venceu!');
     }
 
-    //useEffect(()=> startGame(),[])
-
     /////////////////////Retorno/////////////////////
 
     return(
@@ -122,9 +121,9 @@ export default function Layout() {
                     {letters.map((letra, index) =>
                         <button 
                             key={index}
-                            disabled={!gameStarted}
+                            disabled={gameStarted === true ? (letrasEscolhidas.includes(letra) === true ? true : null) : true}
                             onClick={() => chosenLetter(letra)}
-                            className={gameStarted === true ? 'letrasEnabled' : 'letrasDisabled'}
+                            className={gameStarted === true ? (letrasEscolhidas.includes(letra) === true ? 'letrasDisabled' : 'letrasEnabled') : 'letrasDisabled'}
                             data-test="letter"
                         >
                         {letra}    

@@ -40,7 +40,7 @@ export default function Layout() {
         setGuess('');
         setLetrasEscolhidas([]);
         setFinalWordColor('');
-        setImagemForca(<img src={`./assets/forca${errorCount}.png`} />);
+        setImagemForca(<img src={`./assets/forca0.png`} />);
         setGameDone(false);
         setGameStarted(true);
         console.log('Jogo iniciado!')
@@ -48,7 +48,7 @@ export default function Layout() {
         palavras.sort(shuffleWords);
         //escolhemos a palavra escolhida da partida após o embaralhamento (escolhido aleatoriamente a palavra na posição 30)
         setDrawnWord(palavras[30].split(""));
-        console.log(drawnWord);
+        console.log(palavras[30].split(""));
     }
 
     function shuffleWords(){

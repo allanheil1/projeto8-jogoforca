@@ -92,14 +92,14 @@ export default function Layout() {
         setImagemForca(<img src={`./assets/forca6.png`} data-test="game-image"/>);
         setFinalWordColor('red');
         gameWord = drawnWord;
-        console.log(`perdeu o jogo!`);
+        console.log(`Você perdeu o jogo!`);
     }
 
     function gameWin(){
         setGameDone(true);
         setFinalWordColor('green');
         gameWord = drawnWord;
-        console.log('venceu!');
+        console.log('Você venceu o jogo!');
     }
 
     /////////////////////Retorno/////////////////////

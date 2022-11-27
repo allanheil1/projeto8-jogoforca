@@ -30,17 +30,25 @@ export default function Layout() {
     const [finalWordColor, setFinalWordColor] = React.useState("");
     //variável que controla se o jogo já acabou ou não
     const [gameDone, setGameDone] = React.useState(false);
+    
     /////////////////////Funções/////////////////////
 
     function startGame(){
-        console.log('Jogo iniciado!')
-        //setamos a variável que controla se o jogo já foi iniciado para 'true'
+        setDrawnWord([]);
+        setErrorCount(0);
+        setAcertosCount(0);
+        setGuess('');
+        setLetrasEscolhidas([]);
+        setFinalWordColor('');
+        setImagemForca(<img src={`./assets/forca${errorCount}.png`} />);
+        setGameDone(false);
         setGameStarted(true);
+        console.log('Jogo iniciado!')
         //chamamos a função que embaralha as palavras
         palavras.sort(shuffleWords);
         //escolhemos a palavra escolhida da partida após o embaralhamento (escolhido aleatoriamente a palavra na posição 30)
-        setDrawnWord(...drawnWord, palavras[30].split(""));
-        console.log(...drawnWord, palavras[30].split(""));
+        setDrawnWord(palavras[30].split(""));
+        console.log(drawnWord);
     }
 
     function shuffleWords(){
@@ -49,10 +57,6 @@ export default function Layout() {
 
     function chosenLetter(l){
         console.log(`letra escolhida: ${l}`);
-        //caso o usuário escolha uma letra que já foi escolhida antes, não faz nada, apenas retorna false
-        if(letrasEscolhidas.includes(l)){
-            return false;
-        }
         //adiciona a letra escolhida na lista de letras escolhidas
         setLetrasEscolhidas([...letrasEscolhidas, l]);
         //caso a palavra contenha a letra escolhida, aumenta um acerto
@@ -106,7 +110,7 @@ export default function Layout() {
                 <div className = 'forca'>
                     {imagemForca}
                     <div className = "smallContainer">
-                        <button onClick={startGame} disabled={gameStarted} data-test="choose-word">
+                        <button onClick={startGame} data-test="choose-word">
                             Escolher Palavra
                         </button>
                         <div className={gameDone === false ?'gameWord' : 'hidden'} data-test="word">

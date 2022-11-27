@@ -25,8 +25,11 @@ export default function Layout() {
     //variável que controla as letras já escolhidas da partida
     const[letrasEscolhidas, setLetrasEscolhidas] = React.useState([]);
     //variável que controla a palavra conforme progresso de acertos e mostra na tela
-    const gameWord = drawnWord.map((letter, index) => letrasEscolhidas.includes(drawnWord[index]) ? ` ${letter} ` : '_ ');
-
+    let gameWord = drawnWord.map((letter, index) => letrasEscolhidas.includes(drawnWord[index]) ? ` ${letter} ` : '_ ');
+    //variável que controla a cor da palavra final: vermelho ou verde
+    const [finalWordColor, setFinalWordColor] = React.useState("");
+    //variável que controla se o jogo já acabou ou não
+    const [gameDone, setGameDone] = React.useState(false);
     /////////////////////Funções/////////////////////
 
     function startGame(){
@@ -46,51 +49,52 @@ export default function Layout() {
 
     function chosenLetter(l){
         console.log(`letra escolhida: ${l}`);
-        //caso o usuário selecione uma letra que pode ter variações, temos que tratar este caso aqui
-        if(l === 'a'){
-            setLetrasEscolhidas([...letrasEscolhidas, 'a', 'á', 'â', 'ã']);
-        }
-        if(l === 'e'){
-            setLetrasEscolhidas([...letrasEscolhidas, 'e', 'é', 'ê']);
-        }
-        if(l === 'i'){
-            setLetrasEscolhidas([...letrasEscolhidas, 'i', 'í']);
-        }
-        if(l === 'o'){
-            setLetrasEscolhidas([...letrasEscolhidas, 'o', 'ó', 'ô', 'õ']);
-        }
-        if(l === 'u'){
-            setLetrasEscolhidas([...letrasEscolhidas, 'u', 'ú']);
-        }
-        if(l === 'c'){
-            setLetrasEscolhidas([...letrasEscolhidas, 'c', 'ç']);
+        //caso o usuário escolha uma letra que já foi escolhida antes, não faz nada, apenas retorna false
+        if(letrasEscolhidas.includes(l)){
+            return false;
         }
         //adiciona a letra escolhida na lista de letras escolhidas
         setLetrasEscolhidas([...letrasEscolhidas, l]);
-        console.log('letrasEscolhidas:'+letrasEscolhidas);
         //caso a palavra contenha a letra escolhida, aumenta um acerto
         if(drawnWord.includes(l)){
             setAcertosCount(acertosCount += 1);
-            console.log('acertos:'+acertosCount);
+            console.log('acertos: '+acertosCount);
         }else{ //caso não tenha, aumenta um erro
+            setErrorCount(errorCount += 1);
+            console.log('erros: '+errorCount);
+            //atualiza a imagem da forca correspondente ao número de erros
+            setImagemForca(<img src={`./assets/forca${errorCount}.png`} />);
             if(errorCount === 5){
                 //caso estoure o limite de erros, usuário perde o jogo
                 gameOver();
             }
-            setErrorCount(errorCount += 1);
-            console.log('erros:'+errorCount);
-            //atualiza a imagem da forca correspondente ao número de erros
-            setImagemForca(<img src={`./assets/forca${errorCount}.png`} />);
         }
-        
+        console.log('letrasEscolhidas: '+letrasEscolhidas);
     }
 
     function guessed(){
         console.log(`chutou!`);
+        const palavraCheck = drawnWord.join('');
+        if(guess == palavraCheck){
+            gameWin();
+        }else{
+            gameOver();
+        }
     }
 
     function gameOver(){
+        setGameDone(true);
+        setImagemForca(<img src={`./assets/forca6.png`} />);
+        setFinalWordColor('red');
+        gameWord = drawnWord;
         console.log(`perdeu o jogo!`);
+    }
+
+    function gameWin(){
+        setGameDone(true);
+        setFinalWordColor('green');
+        gameWord = drawnWord;
+        console.log('venceu!');
     }
 
     //useEffect(()=> startGame(),[])
@@ -106,9 +110,12 @@ export default function Layout() {
                         <button onClick={startGame} disabled={gameStarted}>
                             Escolher Palavra
                         </button>
-                        <div className="gameWord">
+                        <div className={gameDone === false ?'gameWord' : 'hidden'}>
                             {gameWord}
                         </div>
+                        <div className={gameDone === true ?`gameWord ${finalWordColor}` : 'hidden'}>
+                            {drawnWord}
+                        </div>             
                     </div>
                 </div>
                 <div className="letras">
@@ -117,6 +124,7 @@ export default function Layout() {
                             key={index}
                             disabled={!gameStarted}
                             onClick={() => chosenLetter(letra)}
+                            className={gameStarted === true ? 'letrasEnabled' : 'letrasDisabled'}
                         >
                         {letra}    
                         </button>

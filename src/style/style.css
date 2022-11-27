@@ -43,7 +43,7 @@ body{
     margin-top: 30px;
 }
 
-.letras button{
+.letrasEnabled{
     text-transform: capitalize;
     width: 40px;
     height: 40px;
@@ -52,6 +52,20 @@ body{
     background-color: rgb(200, 200, 255);
     border: 1px solid royalblue;
     color: royalblue;
+    border-radius: 3px;
+    font-size: 15px;
+    font-weight: bolder;
+}
+
+.letrasDisabled{
+    text-transform: capitalize;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    margin-top: 10px;
+    background-color: rgb(195, 195, 195);
+    border: 1px solid black;
+    color: rgb(50, 50, 50);
     border-radius: 3px;
     font-size: 15px;
     font-weight: bolder;
@@ -91,4 +105,16 @@ body{
 .gameWord{
     font-size: 40px;
     font-weight: 900;
+}
+
+.green{
+    color: green;
+}
+
+.red{
+    color: red;
+}
+
+.hidden{
+    display: none;
 }

@@ -113,7 +113,7 @@ export default function Layout() {
                         <div className={gameDone === false ?'gameWord' : 'hidden'} data-test="word">
                             {gameWord}
                         </div>
-                        <div className={gameDone === true ?`gameWord ${finalWordColor}` : 'hidden'} data-answer="answer">
+                        <div className={gameDone === true ?`gameWord ${finalWordColor}` : 'hidden'} data-answer={drawnWord}>
                             {drawnWord}
                         </div>             
                     </div>

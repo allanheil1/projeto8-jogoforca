@@ -151,7 +151,7 @@ export default function Layout() {
                         <p>Já sei a palavra!</p>
                     </div>
                     <div>
-                        <input type = 'text' onChange={event => setGuess(event.target.value.toLowerCase())} data-test="guess-input"/>
+                        <input disabled = {!gameStarted} type = 'text' onChange={event => setGuess(event.target.value.toLowerCase())} data-test="guess-input"/>
                     </div>
                     <div>
                         <button 

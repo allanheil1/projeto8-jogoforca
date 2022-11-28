@@ -1,5 +1,5 @@
 import palavras from './palavras';
-import React from 'react';
+import React, {useEffect} from 'react';
 
 export default function Layout() {
 
@@ -25,7 +25,7 @@ export default function Layout() {
     //variável que controla as letras já escolhidas da partida
     const[letrasEscolhidas, setLetrasEscolhidas] = React.useState([]);
     //variável que controla a palavra conforme progresso de acertos e mostra na tela
-    let gameWord = drawnWord.map((letter, index) => letrasEscolhidas.includes(drawnWord[index]) ? ` ${letter} ` : '_ ');
+    let gameWord = drawnWord.map((letter, index) => letrasEscolhidas.includes(drawnWord[index]) ? `${letter}` : '_ ');
     //variável que controla a cor da palavra final: vermelho ou verde
     const [finalWordColor, setFinalWordColor] = React.useState("");
     //variável que controla se o jogo já acabou ou não
@@ -60,9 +60,11 @@ export default function Layout() {
         //adiciona a letra escolhida na lista de letras escolhidas
         setLetrasEscolhidas([...letrasEscolhidas, l]);
         //caso a palavra contenha a letra escolhida, aumenta um acerto
+        console.log(letrasEscolhidas);
         if(drawnWord.includes(l)){
             setAcertosCount(acertosCount += 1);
             console.log('acertos: '+acertosCount);
+
         }else{ //caso não tenha, aumenta um erro
             setErrorCount(errorCount += 1);
             console.log('erros: '+errorCount);
@@ -80,7 +82,7 @@ export default function Layout() {
         setGameStarted(false);
         console.log(`chutou!`);
         const palavraCheck = drawnWord.join('');
-        if(guess == palavraCheck){
+        if(guess === palavraCheck){
             gameWin();
         }else{
             gameOver();
@@ -92,15 +94,25 @@ export default function Layout() {
         setImagemForca(<img src={`./assets/forca6.png`} data-test="game-image"/>);
         setFinalWordColor('red');
         gameWord = drawnWord;
-        console.log(`perdeu o jogo!`);
+        console.log(`Você perdeu o jogo!`);
     }
 
     function gameWin(){
         setGameDone(true);
         setFinalWordColor('green');
-        gameWord = drawnWord;
-        console.log('venceu!');
+        console.log('Você venceu o jogo!');
     }
+
+    function verifyWinByLetter(){
+        console.log('gameWord: '+gameWord.join(''));
+        console.log('drawnWord: '+drawnWord.join(''));
+        //verifica se vencemos por letras
+        if(gameWord.join('') === drawnWord.join('')){
+            gameWin();
+        }
+    }
+
+    useEffect(() => {verifyWinByLetter()}, [gameWord, drawnWord]);
 
     /////////////////////Retorno/////////////////////
 
